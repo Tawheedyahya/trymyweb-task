@@ -7,6 +7,9 @@ $result1 = mysqli_query($conn, $sql);
 ?>
 <?php include '../layouts/header.php'; ?>
 
+
+<link rel="stylesheet" href="../common.css">
+
 <?php if (isset($_SESSION['msg'])): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <?= $_SESSION['msg'] ?>
@@ -23,8 +26,9 @@ $result1 = mysqli_query($conn, $sql);
             <select class="form-select">
                 <option value="">Category types</option>
                 <?php if ($result->num_rows > 0): while ($row = $result->fetch_assoc()): ?>
-                    <option value=""><?= $row['name'] ?></option>
-                <?php endwhile; else: ?>
+                        <option value=""><?= $row['name'] ?></option>
+                    <?php endwhile;
+                else: ?>
                     <option value="">No categories</option>
                 <?php endif; ?>
             </select>
@@ -44,13 +48,14 @@ $result1 = mysqli_query($conn, $sql);
         <!-- Delete Category -->
         <div class="col-12 col-md-4">
             <button class="btn btn-danger w-100" id="deletecatagory">Delete Category</button>
-            <form action="deletecatagory.php" id="deletecatagoryform" method="post" style="display:none;" class="mt-2">
+            <form action="deletecatagory.php" id="deletecatagoryform" method="post" style="display:none;" class="mt-2" onsubmit='deleteconfirmation(event)'>
                 <div class="d-flex">
                     <select name="catagoryname" class="form-select me-2" required>
                         <option value="">Select</option>
                         <?php if ($result1->num_rows > 0): while ($row = $result1->fetch_assoc()): ?>
-                            <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
-                        <?php endwhile; else: ?>
+                                <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                            <?php endwhile;
+                        else: ?>
                             <option value="">No categories</option>
                         <?php endif; ?>
                     </select>
@@ -70,9 +75,31 @@ $result1 = mysqli_query($conn, $sql);
         </div>
     </div>
 </div>
-
+<?php include '../com/confirmation.php'; ?>
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="../common.js"></script>
+<script>
+    function deleteconfirmation(event) {
+        event.preventDefault();
+        // $('#confirm').addClass('active');
+
+       
+        $('#confirm').show(function() {
+            $('#yes').click(function() {
+                 document.getElementById('deletecatagoryform').submit();
+                $('#confirm').hide()
+            })
+            $('#no').click(function() {
+                $('#confirm').hide()
+                // return false
+            })
+        })
+
+    }
+</script>
+
+
 </body>
+
 </html>

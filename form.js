@@ -38,7 +38,5 @@ $(document).ready(function () {
         console.log(error);
       },
     });
-
-    alert("Form submission prevented");
   });
 });
